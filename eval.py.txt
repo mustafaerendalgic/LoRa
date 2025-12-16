@@ -1,0 +1,111 @@
+#DEEP TEST -------------------------------------------------------------------------------------------------------------
+
+SYSTEM_PROMPT = "You are an expert Python programmer. Please read the problem carefully before writing any Python code."
+
+unseen_prompt = (
+    "<|system|>\n" + SYSTEM_PROMPT + "\n"
+    "<|user|>\n"
+    "Write a Python function that takes a list of integers and returns the length of the longest increasing subsequence.\n"
+    "Use O(n log n) time. Include a short example.\n"
+    "<|assistant|>\n"
+)
+
+inputs = tokenizer(unseen_prompt, return_tensors="pt").to(model_best.device)
+
+with torch.no_grad():
+    out = model_best.generate(
+        **inputs,
+        max_new_tokens=250,
+        temperature=0.2,
+        top_p=0.9,
+        do_sample=True
+    )
+
+print(tokenizer.decode(out[0], skip_special_tokens=True))
+
+#DIVERSE TEST ----------------------------------------------------------------------------------------------------------
+import torch
+from transformers import AutoTokenizer, AutoModelForCausalLM
+from peft import PeftModel
+
+import os, json, re
+
+CKPT_ROOT = "/content/drive/MyDrive/lora_project/models/diverse_instruction/checkpoints"
+
+def find_best_checkpoint(ckpt_root: str):
+    best = None  # (best_eval_loss, ckpt_dirname, best_step)
+    for d in os.listdir(ckpt_root):
+        if not d.startswith("checkpoint"):
+            continue
+        state_path = os.path.join(ckpt_root, d, "trainer_state.json")
+        if not os.path.exists(state_path):
+            continue
+
+        with open(state_path, "r", encoding="utf-8") as f:
+            st = json.load(f)
+
+        for entry in st.get("log_history", []):
+            if "eval_loss" in entry and "step" in entry:
+                val = float(entry["eval_loss"])
+                step = int(entry["step"])
+                if (best is None) or (val < best[0]):
+                    best = (val, d, step)
+
+    if best is None:
+        raise RuntimeError("No eval_loss found in checkpoint trainer_state.json files.")
+    return best
+
+best_eval_loss, best_ckpt_dir, best_step = find_best_checkpoint(CKPT_ROOT)
+best_ckpt_path = os.path.join(CKPT_ROOT, best_ckpt_dir)
+
+print("BEST CHECKPOINT:", best_ckpt_dir)
+print("BEST STEP:", best_step)
+print("BEST eval_loss:", best_eval_loss)
+print("PATH:", best_ckpt_path)
+
+MODEL_NAME = "Qwen/Qwen2.5-Coder-1.5B-Instruct"
+
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+
+base_model = AutoModelForCausalLM.from_pretrained(
+    MODEL_NAME,
+    torch_dtype=torch.float16,
+    device_map="auto"
+)
+
+model_best = PeftModel.from_pretrained(base_model, best_ckpt_path)
+model_best.eval()
+
+SYSTEM_PROMPT = (
+    "You are an expert Python programmer. "
+    "Please read the problem carefully before writing any Python code."
+)
+
+def generate_unseen(prompt_user: str, max_new_tokens=250):
+    prompt = (
+        f"<|system|>\n{SYSTEM_PROMPT}\n"
+        f"<|user|>\n{prompt_user}\n"
+        f"<|assistant|>\n"
+    )
+    inputs = tokenizer(prompt, return_tensors="pt").to(model_best.device)
+    with torch.no_grad():
+        out = model_best.generate(
+            **inputs,
+            max_new_tokens=max_new_tokens,
+            temperature=0.2,
+            top_p=0.9,
+            do_sample=True
+        )
+    return tokenizer.decode(out[0], skip_special_tokens=True)
+
+unseen_prompts = [
+    "Write a Python function that merges two sorted lists into one sorted list without using sort(). Include a short example.",
+    "Given a list of dictionaries with keys 'name' and 'score', return the top-k by score. Handle ties deterministically.",
+    "Fix this code and explain the bug:\n\ndef f(x):\n    return x[0] + x[1]\n\nprint(f(5))\n"
+]
+
+for i, p in enumerate(unseen_prompts, 1):
+    print("\n" + "="*80)
+    print(f"UNSEEN PROMPT {i}")
+    print("="*80)
+    print(generate_unseen(p))
