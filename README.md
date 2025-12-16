@@ -43,49 +43,6 @@ The project strictly follows the given project specification and includes:
 - Broad range of problem types
 - Encourages generalization
 
-Each dataset contains:
-- `train`
-- `valid`
-- `test` splits
-
----
-
-## System Prompt
-You are an expert Python programmer.
-Please read the problem carefully before writing any Python code.
-
-
----
-
-## Training Configuration
-
-| Parameter | Value |
-|--------|------|
-| Epochs | 3 |
-| Batch Size | 2 |
-| Gradient Accumulation | 8 |
-| Effective Batch Size | 16 |
-| Learning Rate | 2e-5 |
-| Context Length | 640 |
-| Evaluation Interval | Every 20 steps |
-| Checkpoint Interval | Every 20 steps |
-
----
-
-## Loss Logging
-
-Loss values are logged **every 20 steps** as required.
-
-Each CSV file contains:
-- Training loss
-- Validation loss
-- Test loss
-
-### Loss Tables
-- `deep_loss_table.csv`
-- `diverse_loss_table.csv`
-
----
 
 ## Loss Graphs (Required)
 
@@ -121,25 +78,9 @@ Overall, both models demonstrate successful learning without memorization.
 
 ## Benchmark Evaluation
 
-Evaluation is performed using **41 AtCoder problems** via `livecodebench_eval.py`.
 
-Each saved checkpoint is tested, and the best one is selected based on **Pass@1** score.
 
 ---
 
-## Best Checkpoint Selection
 
-| Model | Best Checkpoint | Pass@1 | Solved |
-|-----|---------------|-------|--------|
-| Base Model | – | ?% | 27 / 41 |
-| Deep Instruction | step-120 | ?% | 33 / 41 |
-| Diverse Instruction | step-180 | ?% | 35 / 41 |
-
----
-
-## Repository Structure
-
-
-
-The following system prompt is **mandatory** and used during training:
 
