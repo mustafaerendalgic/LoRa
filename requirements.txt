@@ -1,0 +1,19 @@
+# Core LLM and Training
+torch>=2.0.0
+transformers>=4.34.0
+datasets
+accelerate
+peft
+bitsandbytes
+trl
+scipy
+
+# Evaluation (LiveCodeBench Requirements)
+numpy
+pandas
+tqdm
+requests
+
+# Visualization
+matplotlib
+seaborn
