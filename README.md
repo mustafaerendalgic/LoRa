@@ -25,7 +25,6 @@ Below are the training, validation, and test loss curves for both experiments:
 
 | Model | Best Checkpoint | Pass@1 | Solved Problems |
 | :--- | :--- | :--- | :--- |
-| **Base Model** | Qwen2.5-Coder-1.5B | 65.8% | 27/41 |
 | **Deep Instruction** | **Step-220** | **33.3%** | **14/41** |
 | **Diverse Instruction** | **Step-540** | **29.3%** | **12/41** |
 
