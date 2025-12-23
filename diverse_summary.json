@@ -1,0 +1,71 @@
+{
+  "timestamp": "2025-12-19T10:42:06.065326",
+  "config": {
+    "base_model": "Qwen/Qwen2.5-Coder-1.5B-Instruct",
+    "livecodebench_version": "release_v5",
+    "date_range": "2408-2502",
+    "platform": "atcoder",
+    "difficulty": "easy",
+    "model_types": [
+      "diverse_instruction"
+    ],
+    "steps": null,
+    "num_problems": 41
+  },
+  "results": [
+    {
+      "model_name": "diverse_instruction_checkpoint-step-520-epoch-0",
+      "model_type": "diverse_instruction",
+      "checkpoint_path": "models/diverse_instruction/checkpoints/checkpoint-step-520-epoch-0",
+      "difficulty": "2408-2502_atcoder",
+      "num_problems": 41,
+      "timestamp": "2025-12-19T10:15:59.967893",
+      "stats": {
+        "total": 41,
+        "passed": 8,
+        "failed": 33,
+        "error": 0,
+        "no_tests": 0,
+        "pass_at_1": 0.1951219512195122
+      },
+      "pass_at_1": 0.1951219512195122,
+      "detailed_log": "results/livecodebench/detailed/diverse_instruction_checkpoint-step-520-epoch-0_2408-2502_atcoder.jsonl"
+    },
+    {
+      "model_name": "diverse_instruction_checkpoint-step-540-epoch-0",
+      "model_type": "diverse_instruction",
+      "checkpoint_path": "models/diverse_instruction/checkpoints/checkpoint-step-540-epoch-0",
+      "difficulty": "2408-2502_atcoder",
+      "num_problems": 41,
+      "timestamp": "2025-12-19T10:28:24.580009",
+      "stats": {
+        "total": 41,
+        "passed": 12,
+        "failed": 29,
+        "error": 0,
+        "no_tests": 0,
+        "pass_at_1": 0.2926829268292683
+      },
+      "pass_at_1": 0.2926829268292683,
+      "detailed_log": "results/livecodebench/detailed/diverse_instruction_checkpoint-step-540-epoch-0_2408-2502_atcoder.jsonl"
+    },
+    {
+      "model_name": "diverse_instruction_checkpoint-step-560-epoch-0",
+      "model_type": "diverse_instruction",
+      "checkpoint_path": "models/diverse_instruction/checkpoints/checkpoint-step-560-epoch-0",
+      "difficulty": "2408-2502_atcoder",
+      "num_problems": 41,
+      "timestamp": "2025-12-19T10:42:06.064013",
+      "stats": {
+        "total": 41,
+        "passed": 12,
+        "failed": 29,
+        "error": 0,
+        "no_tests": 0,
+        "pass_at_1": 0.2926829268292683
+      },
+      "pass_at_1": 0.2926829268292683,
+      "detailed_log": "results/livecodebench/detailed/diverse_instruction_checkpoint-step-560-epoch-0_2408-2502_atcoder.jsonl"
+    }
+  ]
+}
